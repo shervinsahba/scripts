@@ -1,0 +1,13 @@
+#!/bin/bash
+
+input="$1"
+output=$(basename -s .mp4 "$2").mp4
+
+crf=19                    # Constant Rate Factore. Lower for better quality.
+preset='slow'             # e.g. 'slow','veryslow'. Use 'veryslow' for better compression.
+video_codec='libx264'     # e.g. 'libx264','h264_nvenc'. Use 'h264_nvenc' for NVIDIA hardware speedup.
+audio_codec='libfdk_aac'
+audio_bitrate='192k'
+
+ffmpeg -i "$1" -c:v "$video_codec" -crf "$crf" -preset "$preset" -c:a "$audio_codec" -b:a "$audio_bitrate" -ac 2 "$output"
+
