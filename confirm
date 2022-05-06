@@ -1,0 +1,14 @@
+#!/bin/bash
+# Confirms if you want to run a specific command.
+
+cmd="$1"
+
+read -p "Run \"$cmd\"? " choice
+while [ $# -gt 0 ]; do
+  case "$choice" in 
+    y|Y|yes ) $cmd; exit;;
+    n|N|no ) exit;;
+    * ) read -p "Invalid option, please specify (y/n): " choice;;
+  esac
+done
+

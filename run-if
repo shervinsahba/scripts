@@ -1,0 +1,15 @@
+#!/bin/bash
+# Runs a given command if it exists.
+# Falls back to a second command if given.
+
+# note: don't use "$1" below to make use of globbing rules. use $1.
+if command -v $1 &> /dev/null ; then 
+    $1
+elif [ -n "$2" ] && command -v $2 &> /dev/null ; then 
+    $2
+else
+    echo "command1 not found: $1" >&2
+    if [ -n "$2" ]; then
+        echo "command2 not found: $2" >&2
+    fi
+fi

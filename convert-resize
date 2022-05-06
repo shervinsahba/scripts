@@ -1,0 +1,14 @@
+#!/bin/bash
+# Uses convert to resize an image.
+
+if [ $# -lt 2 ]; then
+    echo "Usage: convert-resize <image> <PIXELxPIXEL>"
+else
+    basename="${1##*/}"   		# removes path
+    extension="${basename##*.}"	# jpg, png, etc
+    tmp=/tmp/"${basename}"      # temp file
+
+    convert "$1" -coalesce "$tmp"
+
+    convert -size $(identify "$1" | cut -d' ' -f3) "$tmp" -resize "$2" "${1%.*}"-"$2"."${extension}"
+fi

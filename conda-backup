@@ -1,0 +1,30 @@
+#!/bin/bash
+# backup all conda environments
+
+source ~/miniconda3/etc/profile.d/conda.sh || source ~/anaconda3/etc/profile.d/conda.sh
+
+envs=$(conda env list | cut -d' ' -f1 | grep '^..')  # get list of envs
+
+for env in ${envs}; do
+    case "$1" in
+        --full)
+			conda activate ${env}
+			conda env export > ${env}_FULL_$(datetime)}.yml 
+		;;
+
+        --mini)
+			conda activate ${env}
+			conda env export --from-history > ${env}_MINI_$(datetime).yml
+		;;
+
+        --help|*) 
+			cat<<- EOF
+				Usage: conda-backup <option>
+				Creates backups of all conda environments to the present directory.
+					--full creates a yml file for each env with all packages.
+					--mini creates yml files with only the explicitly installed packages.
+			EOF
+		    exit 
+		;;
+	esac
+done

@@ -1,0 +1,5 @@
+#!/bin/bash
+# Cookiecutter Data Science v1 template
+# https://github.com/drivendata/cookiecutter-data-science
+
+cookiecutter -c v1 https://github.com/drivendata/cookiecutter-data-science

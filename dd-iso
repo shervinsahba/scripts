@@ -1,0 +1,7 @@
+#!/bin/bash
+
+input_file="$1"      # e.g. linux_distro.iso
+output_file="$2"    # e.g. a partition like /dev/sdc
+
+
+dd bs=4M if="$input_file" of="$output_file" status=progress oflag=sync

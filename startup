@@ -1,0 +1,48 @@
+#!/bin/bash
+# a script to manage startup programs
+
+case "$1" in
+    --on-boot)
+        autorandr --change &
+        indicator-sound-switcher &
+        # ~/.config/mopidy/concat_mopidy_conf && mopidy &
+        mpd-notification --music-dir ~/Music &
+        udiskie --no-automount --notify --smart-tray &
+        # redshift -l $(latlong) &
+        redshift -l 47:-122 &
+        xidlehook --not-when-fullscreen --not-when-audio --timer 360 'betterlockscreen --off 5 -l dim' '' &
+        xidlehook --timer 300 'brightnessctl set 60%' 'brightnessctl set 100%' &
+        nm-applet &
+        pcloud &
+		if [ -e /sys/class/power_supply/BAT0 ]; then
+			batsignal &
+		fi
+    ;;
+
+    --on-restart)
+        killall picom xcompmgr autotiling
+        sleep 1
+        ~/.config/polybar/launch.sh --mine &
+        picom --experimental-backends --config ~/.config/picom/picom.conf &
+        # xcompmgr -c -C -t-5 -l-5 -r4.2 -o.55 &
+        autotiling &
+		sleep 1
+        wal -R
+    ;;
+
+	--polybar)
+		~/.config/polybar/launch.sh --mine &
+	;;
+
+    --test)
+        echo Test complete.
+    ;;
+
+    --help|*)
+        cat <<- EOF
+		Usage: startup --option
+		--on-boot       for startup programs on boot
+		--on-restart    for programs that may need a restart with the window manager
+		--polybar		polybar only
+		EOF
+esac

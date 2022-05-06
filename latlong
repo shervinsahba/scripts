@@ -1,0 +1,5 @@
+#!/bin/bash
+# returns latitude and longitude as lat:long using mozilla's geolocate
+
+echo $(curl -s https://location.services.mozilla.com/v1/geolocate?key=geoclue | jq '.location.lat, .location.lng' | tr '\n' ':' | sed 's/:$//')
+

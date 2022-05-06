@@ -1,0 +1,48 @@
+#!/bin/bash
+
+hyak-send() {
+  login="$1"
+  local_file_path="$2"
+  destination_path="$3"
+  scp "$local_file_path" "$login"@mox.hyak.uw.edu:"$destination_path"
+}
+
+hyak-get() {
+  login="$1"
+  remote_file_path="$2"
+  destination_path="$3"
+  LOGIN=ssahba
+  scp "$login"@mox.hyak.uw.edu:"$remote_file_path" "$destination_path"
+}
+
+hyak-login() {
+    login="$1"
+    ssh -X $login@mox.hyak.uw.edu
+}
+
+hyak-port() {
+    login="$1"
+    ssh -L 6969:127.0.0.1:6969 $login@mox.hyak.uw.edu
+
+}
+
+sshfs-vergil() {
+    login="$1"
+    local_path="$2"
+    # local_path is the dir you want to use to replicate the vergil fs
+    # for example ~/ACADEMIA/UW/vergil/
+    sshfs -o allow_other,default_permissions,idmap=user $login@vergil.u.washington.edu: "$local_path"
+
+}
+
+case "$1" in
+    send) hyak-send $2 $3 $4 ;;
+    get) hyak-get $2 $3 $4 ;;
+    login) hyak-login $2 ;;
+    port) hyak-port $2 ;;
+    vergil) sshfs-vergil $2 $3 ;;
+    *) cat <<- EOF
+		Usage: hyak <option>
+		options: login, get, send, port, vergil
+		EOF
+esac

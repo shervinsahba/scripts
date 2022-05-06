@@ -1,0 +1,11 @@
+#!/bin/bash
+# Mounts an encfs directory '.<dirname>' to '<dirname>' in present working directory.
+
+dirname="$1"
+
+if [ -n "$dirname" ]; then
+    encfs $(pwd)/."$dirname" $(pwd)/"$dirname"
+else
+    echo "Usage: $(basename $0) <dirname>"
+    echo "Mounts an encfs directory '.<dirname>' to '<dirname>' in present working directory."
+fi

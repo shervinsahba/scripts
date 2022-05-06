@@ -1,0 +1,36 @@
+#!/bin/bash
+# Short script to manage my tdrop calls.
+
+case "$1" in
+    kitty)
+		screen_width=$(xrandr | grep primary | cut -d' ' -f4 | cut -d'x' -f1) 
+		if [[ $screen_width > 2000 ]]; then
+			kitty_w="70%"
+			kitty_h="80%"
+			kitty_x="15%"
+		else
+			kitty_w="90%"
+			kitty_h="95%"
+			kitty_x="5%"
+		fi	
+		tdrop -ma -w "$kitty_w" -h "$kitty_h" -x "$kitty_x" -y 0 kitty --name kittydrop 
+    ;;
+
+    pavucontrol)
+        tdrop -ma -w 800 -h 400 -x -810 -y 30 pavucontrol
+    ;;
+
+    blueman-manager)
+        tdrop -ma -w 800 -h 400 -x -810 -y 30 blueman-manager
+    ;;
+
+    zotero)
+        tdrop -ma -w 46% -h 92% -x 2% -y 4% zotero
+    ;;
+    
+    *)
+        cat <<- EOF
+		Usage: tdrops <option>
+		options: kitty, pavucontrol, blueman-manager, zotero
+		EOF
+esac

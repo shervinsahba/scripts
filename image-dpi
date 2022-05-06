@@ -1,0 +1,19 @@
+#!/bin/bash
+
+while test $# -gt 0; do
+
+    FILE="${1}"
+    FILE_EXTENSION="${FILE##*.}"
+    FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
+    
+    case "${FILE_EXTENSION_LOWER}" in
+        pdf) 
+            echo $(pdfimages -list "${FILE}" | sed 's/-//g' | cut -d ' ' -f 45-46) "${FILE}" ;;
+        *)
+            echo $(identify -format '%x,%y\n' -units PixelsPerInch "${FILE}") "${FILE}";;
+    esac
+
+    shift
+            
+done
+

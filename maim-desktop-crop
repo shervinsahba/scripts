@@ -1,0 +1,7 @@
+!#/bin/bash
+
+mkdir -p $HOME/Downloads/maim-screenshots
+FILE=$HOME/Downloads/maim-screenshots/$(date -Iseconds)
+
+maim $FILE.png
+viewnior $FILE.png

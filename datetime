@@ -1,0 +1,4 @@
+#!/bin/bash
+# Returns date and time as a continuous string to second precision.
+
+echo $(date +%Y-%m-%d_%H-%M-%S)
