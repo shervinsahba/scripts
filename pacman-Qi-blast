@@ -1,4 +1,7 @@
 #!/bin/bash
 # lists installed packages, dependencies, and requirements in pretty format
 
- pacman -Qi | sed '/^Depends On/,/^Required By/{ s/^Required By.*$//; H; d }; /^Name/!d; /^Name/{ n;x;}'| sed '/^$/s//==================================================================================/' | less
+pacman -Qi | \
+sed '/^Depends On/,/^Required By/{ s/^Required By.*$//; H; d }; /^Name/!d; /^Name/{ n;x;}'| \
+sed '/^$/s//==============================================================================/' | \
+less
