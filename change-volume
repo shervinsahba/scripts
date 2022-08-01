@@ -1,29 +1,59 @@
 #!/bin/bash
 # Controls volume using pulseaudio and displays notification.
 
-# arbitrary but unique message id
-msgId="991049"
+function get_active_sink {
+	pacmd list-sinks | awk '/\* index:/{print $3}' # * is the active sink
+}
 
-if [ -n "$1" ]; then
+function get_volume {
+	pacmd list-sinks | grep -A 15 '\* index' | \
+		awk '/^\svolume:/{print $5}' | cut -d '%' -f 1
+}
 
-    # change the volume
-    pulseaudio-ctl "$1" > /dev/null
+function get_mute_status {
+	status=$(pacmd list-sinks | grep -A 15 '\* index' | \
+				awk '/muted:/{print $2}')
+	if [[ "$status" == "yes" ]]; then
+		echo "MUTED"
+	fi
+}
 
-    # get the current volume and whether or not the speaker is muted
-    volume="$(pulseaudio-ctl full-status | cut -d' ' -f1)"
-    mute="$(pulseaudio-ctl full-status | cut -d' ' -f2)"
-    if [[ $volume == 0 || "$mute" == "yes" ]]; then
-        # send sound muted notification
-        dunstify -a "changeVolume" -u low -i audio-volume-muted -r "$msgId" "Volume muted" 
-    else
-        # send volume notification
-        dunstify -a "changeVolume" -u low -i audio-volume-high -r "$msgId" \
-        "Volume: ${volume}%" "$(get-progress-string 20 "<b>∎</b>" "─" $volume)"
-    fi
+function volume_notification {
+	msgId="991049"  # arbitrary but unique message id
+	volume=$(get_volume)
+	mute_status=$(get_mute_status)
+	if [[ "$mute_status" == "MUTED" ]]; then
+		img="audio-volume-muted"
+	else
+		img="audio-volume-high"
+	fi
 
-    # play the volume changed sound
-    canberra-gtk-play -i audio-volume-change -d "changeVolume"
-else
-    echo "Usage: $(basename $0) <up/down/mute>"
-fi
+	# send notification
+	dunstify -u low -i "$img" -r "$msgId" \
+		"Volume: ${volume}% ${mute_status}" \
+		"$(get-progress-string 20 "<b>▰</b>" "▱" $volume)"
+
+	# play the volume changed sound
+	canberra-gtk-play -i audio-volume-change -d "changeVolume"
+}
+
+
+case "$1" in
+	up)
+		pactl set-sink-volume $(get_active_sink) +5%
+		volume_notification
+		;;
+	down)
+		pactl set-sink-volume $(get_active_sink) -5%
+		volume_notification
+		;;
+	mute)
+		pactl set-sink-mute $(get_active_sink) toggle
+		volume_notification
+		;;
+	*) 
+		echo "Usage: $(basename $0) <up/down/mute>"
+		;;
+esac
+
 
