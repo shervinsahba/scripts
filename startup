@@ -8,8 +8,6 @@ case "$1" in
     on-boot)
 		date > $logfile
         #indicator-sound-switcher &
-        # ~/.config/mopidy/concat_mopidy_conf && mopidy &
-        mpd-notification --music-dir ~/Music &
         udiskie --no-automount --notify --smart-tray &
         #redshift -l $(latlong) &
         #redshift -l 47:-122 &
@@ -17,6 +15,7 @@ case "$1" in
         pcloud &
 		autorandr --change
 		autotiling &
+        mpd-notification --music-dir ~/Music &
 		startup if-battery
 		startup lock
     ;;
