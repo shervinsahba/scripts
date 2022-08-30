@@ -2,11 +2,11 @@
 # a script to manage startup programs
 
 logfile=~/.startup-log
-exec &> $logfile
-date
+exec &>> $logfile
 
 case "$1" in
     on-boot)
+		date > $logfile
         #indicator-sound-switcher &
         # ~/.config/mopidy/concat_mopidy_conf && mopidy &
         #mpd-notification --music-dir ~/Music &
