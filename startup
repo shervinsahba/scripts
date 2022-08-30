@@ -9,7 +9,7 @@ case "$1" in
 		date > $logfile
         #indicator-sound-switcher &
         # ~/.config/mopidy/concat_mopidy_conf && mopidy &
-        #mpd-notification --music-dir ~/Music &
+        mpd-notification --music-dir ~/Music &
         udiskie --no-automount --notify --smart-tray &
         #redshift -l $(latlong) &
         #redshift -l 47:-122 &
