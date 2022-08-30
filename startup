@@ -18,11 +18,11 @@ case "$1" in
 		autorandr --change
 		autotiling &
 		startup if-battery
+		startup lock
     ;;
 
     on-restart)
         startup bar
-		startup xidlehooks
 		startup theme
 		startup compositor
     ;;
@@ -52,10 +52,12 @@ case "$1" in
 		xmodmap "~/.Xmodmap"
 	;;
 
-	xidlehooks)
-		pkill xidlehook
-		xidlehook --not-when-fullscreen --not-when-audio --timer 360 'betterlockscreen --off 5 -l dim' '' &
-		#xidlehook --timer 300 'brightnessctl set 60%' 'brightnessctl set 100%' &
+	lock)
+		seconds_dim=200
+		seconds_lock=300
+		xset s $seconds_lock $seconds_dim
+		xss-lock -n dim-screen -- xsecurelock &
+		#xsslock -b dim-screen -- betterlockscreen --off 5 -l dim
 	;;
 
     test)
@@ -71,7 +73,7 @@ case "$1" in
 		  bar				polybar
 		  theme				colors & theming
 		  keyboard-layout	xmodmap
-		  xidlehooks		idle hooks
+		  lock				screensaver lock
 		  if-battery		for laptops and battery based devices
 		  test				test
 		EOF
