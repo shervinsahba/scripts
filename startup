@@ -1,48 +1,78 @@
 #!/bin/bash
 # a script to manage startup programs
 
+logfile=~/.startup-log
+exec &> $logfile
+date
+
 case "$1" in
-    --on-boot)
-        autorandr --change &
-        indicator-sound-switcher &
+    on-boot)
+        #indicator-sound-switcher &
         # ~/.config/mopidy/concat_mopidy_conf && mopidy &
-        mpd-notification --music-dir ~/Music &
+        #mpd-notification --music-dir ~/Music &
         udiskie --no-automount --notify --smart-tray &
-        # redshift -l $(latlong) &
-        redshift -l 47:-122 &
-        xidlehook --not-when-fullscreen --not-when-audio --timer 360 'betterlockscreen --off 5 -l dim' '' &
-        xidlehook --timer 300 'brightnessctl set 60%' 'brightnessctl set 100%' &
+        #redshift -l $(latlong) &
+        #redshift -l 47:-122 &
         nm-applet &
         pcloud &
+		autorandr --change
+		autotiling &
+		startup if-battery
+    ;;
+
+    on-restart)
+        startup bar
+		startup xidlehooks
+		startup theme
+		startup compositor
+    ;;
+
+	if-battery)
 		if [ -e /sys/class/power_supply/BAT0 ]; then
 			batsignal &
 		fi
-    ;;
+	;;	
 
-    --on-restart)
-        killall picom xcompmgr autotiling
-        sleep 1
-        ~/.config/polybar/launch.sh --mine &
-        picom --experimental-backends --config ~/.config/picom/picom.conf &
-        # xcompmgr -c -C -t-5 -l-5 -r4.2 -o.55 &
-        autotiling &
-		sleep 1
-        wal -R
-    ;;
-
-	--polybar)
-		~/.config/polybar/launch.sh --mine &
+	compositor|picom)
+		pkill picom && sleep 2
+		picom --experimental-backends --config ~/.config/picom/picom.conf &
 	;;
 
-    --test)
+	bar|polybar)
+		~/.config/polybar/polybar-launch mine
+	;;
+
+	theme)
+		wallpaper=~/.local/share/wallpapers/moon-3440x1440.jpg 
+		feh --bg-fill $wallpaper || xsetroot -solid '#111111'
+		wal --theme .config/wal/colorschemes/dark/batpuccin16.json &
+	;;
+
+	keyboard-layout)
+		xmodmap "~/.Xmodmap"
+	;;
+
+	xidlehooks)
+		pkill xidlehook
+		xidlehook --not-when-fullscreen --not-when-audio --timer 360 'betterlockscreen --off 5 -l dim' '' &
+		#xidlehook --timer 300 'brightnessctl set 60%' 'brightnessctl set 100%' &
+	;;
+
+    test)
         echo Test complete.
     ;;
 
     --help|*)
         cat <<- EOF
 		Usage: startup --option
-		--on-boot       for startup programs on boot
-		--on-restart    for programs that may need a restart with the window manager
-		--polybar		polybar only
+		  on-boot       	for startup programs on boot
+		  on-restart 	   	for programs that need refresh on WM restart
+		  compositor		picom
+		  bar				polybar
+		  theme				colors & theming
+		  keyboard-layout	xmodmap
+		  xidlehooks		idle hooks
+		  if-battery		for laptops and battery based devices
+		  test				test
 		EOF
 esac
