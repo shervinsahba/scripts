@@ -13,14 +13,15 @@ case "$1" in
         #redshift -l 47:-122 &
         nm-applet &
         pcloud &
+		syncthingtray &
 		autorandr --change
 		autotiling &
-        mpd-notification --music-dir ~/Music &
 		startup if-battery
 		startup lock
     ;;
 
     on-restart)
+		sleep 1
         startup bar
 		startup theme
 		startup compositor
