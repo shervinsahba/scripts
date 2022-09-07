@@ -1,19 +1,29 @@
 #!/bin/bash
 # Short script to manage my tdrop calls.
 
+function get_screen_width {
+	xrandr | grep primary | cut -d' ' -f4 | cut -d'x' -f1
+}
+
+function set_style_quake {
+		if [[ $(get_screen_width) > 2000 ]]; then
+			w="70%"
+			h="80%"
+			x="15%"
+			y=0
+		else
+			w="90%"
+			h="96%"
+			x="5%"
+			y=0
+		fi
+}
+
+
 case "$1" in
     kitty)
-		screen_width=$(xrandr | grep primary | cut -d' ' -f4 | cut -d'x' -f1) 
-		if [[ $screen_width > 2000 ]]; then
-			kitty_w="70%"
-			kitty_h="80%"
-			kitty_x="15%"
-		else
-			kitty_w="90%"
-			kitty_h="95%"
-			kitty_x="5%"
-		fi	
-		tdrop -ma -w "$kitty_w" -h "$kitty_h" -x "$kitty_x" -y 0 kitty --name kittydrop 
+		set_style_quake
+		tdrop -ma -w $w -h $h -x $x -y $y kitty --name kittydrop 
     ;;
 
     pavucontrol)
@@ -25,7 +35,8 @@ case "$1" in
     ;;
 
     zotero)
-        tdrop -ma -w 46% -h 92% -x 2% -y 4% zotero
+		set_style_quake
+        tdrop -ma -w $w  -h $h -x $x -y $y zotero
     ;;
     
     *)
