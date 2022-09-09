@@ -53,11 +53,7 @@ case "$1" in
 	;;
 
 	lock)
-		seconds_dim=200
-		seconds_lock=300
-		xset s $seconds_lock $seconds_dim
-		xss-lock -n dim-screen -- xsecurelock &
-		#xsslock -b dim-screen -- betterlockscreen --off 5 -l dim
+		screen-locker &
 	;;
 
     test)

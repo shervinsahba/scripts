@@ -1,0 +1,5 @@
+#!/bin/bash
+# Installs the requires python modules for a conda environment to
+# appear in other conda environments' jupyter kernel lists.
+
+conda install ipykernel ipywidgets nb_conda_kernels

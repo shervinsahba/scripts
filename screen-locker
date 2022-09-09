@@ -3,4 +3,4 @@
 seconds_dim=200
 seconds_lock=300
 xset s $seconds_lock $seconds_dim
-xss-lock -n dim-screen -- xsecurelock &
+xss-lock -n dim-screen -- xsecurelock
