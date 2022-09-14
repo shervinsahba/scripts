@@ -7,21 +7,20 @@ exec &>> $logfile
 case "$1" in
     on-boot)
 		date > $logfile
-        #indicator-sound-switcher &
-        udiskie --no-automount --notify --smart-tray &
         #redshift -l $(latlong) &
         #redshift -l 47:-122 &
-        nm-applet &
-        pcloud &
-		syncthingtray &
 		autorandr --change
 		autotiling &
 		startup if-battery
 		startup lock
+        udiskie --no-automount --notify --smart-tray &
+        indicator-sound-switcher &
+		syncthingtray --wait &
+        nm-applet &
+        pcloud &
     ;;
 
     on-restart)
-		sleep 1
         startup bar
 		startup theme
 		startup compositor
