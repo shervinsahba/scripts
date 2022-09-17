@@ -1,6 +1,11 @@
 #!/bin/bash
 
-seconds_dim=200
-seconds_lock=300
+if [ -e /sys/class/power_supply/BAT0 ]; then
+	seconds_dim=200
+	seconds_lock=300
+else
+	seconds_dim=900
+	seconds_lock=1000
+fi
 xset s $seconds_lock $seconds_dim
 xss-lock -n dim-screen -- xsecurelock
