@@ -1,0 +1,32 @@
+#!/bin/sh
+# cryptsetup and LUKS scripts, mostly to help me remember useful commands
+
+info_dump() {
+	device="$1"
+	sudo cryptsetup luksDump "$device"
+}
+
+test_passphrase() {
+	slot="$1"
+	device="$2"
+	sudo cryptsetup luksOpen --test-passphrase --key-slot "$slot" "$device"
+}
+
+add_key_to_slot() {
+	slot="$1"
+	device="$2"
+	sudo cryptsetup luksAddKey -S "$slot" "$device"
+}
+
+case "$1" in
+	info|list) info_dump "$2" ;;
+	testkey) test_passphrase "$2" "$3" ;;
+	addkey) add_key_to_slot "$2" "$3" ;;
+	*) cat <<- EOF
+		usage: crypt-tools <option> <parameters...>
+		options: 
+		  info <device>
+		  testkey <slot> <device>
+		  addkey <slot> <device>
+	EOF
+esac
