@@ -1,24 +1,18 @@
 #!/bin/bash
 # Controls volume using pulseaudio and displays notification.
 
-function get_active_sink {
-	pacmd list-sinks | awk '/\* index:/{print $3}' # * is the active sink
+get_volume() {
+	pactl get-sink-volume @DEFAULT_SINK@ | grep -o '..%' | head -n1 | cut -d'%' -f1
 }
 
-function get_volume {
-	pacmd list-sinks | grep -A 15 '\* index' | \
-		awk '/^\svolume:/{print $5}' | cut -d '%' -f 1
-}
-
-function get_mute_status {
-	status=$(pacmd list-sinks | grep -A 15 '\* index' | \
-				awk '/muted:/{print $2}')
+get_mute_status() {
+	status=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '/Mute:/{print $2}')
 	if [[ "$status" == "yes" ]]; then
 		echo "MUTED"
 	fi
 }
 
-function volume_notification {
+volume_notification() {
 	msgId="991049"  # arbitrary but unique message id
 	volume=$(get_volume)
 	mute_status=$(get_mute_status)
@@ -29,26 +23,23 @@ function volume_notification {
 	fi
 
 	# send notification
-	dunstify -u low -i "$img" -r "$msgId" \
-		"Volume: ${volume}% ${mute_status}" \
-		"$(get-progress-string 20 "<b>▰</b>" "▱" $volume)"
+	dunstify -u low -i "$img" -r "$msgId" "Volume: ${volume}% ${mute_status}" # "$(get-progress-string 20 "<b>▰</b>" "▱" $volume)"
 
 	# play the volume changed sound
 	canberra-gtk-play -i audio-volume-change -d "changeVolume"
 }
 
-
 case "$1" in
 	up)
-		pactl set-sink-volume $(get_active_sink) +5%
+		pactl set-sink-volume @DEFAULT_SINK@ +5%
 		volume_notification
 		;;
 	down)
-		pactl set-sink-volume $(get_active_sink) -5%
+		pactl set-sink-volume @DEFAULT_SINK@ -5%
 		volume_notification
 		;;
 	mute)
-		pactl set-sink-mute $(get_active_sink) toggle
+		pactl set-sink-mute @DEFAULT_SINK@ toggle
 		volume_notification
 		;;
 	*) 
