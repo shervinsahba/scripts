@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ -e /sys/class/power_supply/BAT0 ]; then
-	seconds_dim=200
-	seconds_lock=300
+	seconds_dim=300
+	seconds_lock=330
 else
 	seconds_dim=900
 	seconds_lock=1000

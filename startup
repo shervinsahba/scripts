@@ -2,7 +2,7 @@
 # a script to manage startup programs
 
 logfile=~/.startup-log
-exec &>> $logfile
+exec 2>> $logfile
 
 case "$1" in
     on-boot)
@@ -13,6 +13,7 @@ case "$1" in
 		autotiling &
 		startup if-battery
 		startup lock
+		# commands below this line utilize the system tray
         udiskie --no-automount --notify --smart-tray &
         indicator-sound-switcher &
 		syncthingtray --wait &
@@ -26,26 +27,20 @@ case "$1" in
 		startup compositor
     ;;
 
-	if-battery)
-		if [ -e /sys/class/power_supply/BAT0 ]; then
-			batsignal &
-		fi
-	;;	
+	bar|polybar)
+		~/.config/polybar/polybar-launch mine
+	;;
 
 	compositor|picom)
 		pkill picom && sleep 2
 		picom --experimental-backends --config ~/.config/picom/picom.conf &
 	;;
 
-	bar|polybar)
-		~/.config/polybar/polybar-launch mine
-	;;
-
-	theme)
-		wallpaper=~/.local/share/wallpapers/moon-3440x1440.jpg 
-		feh --bg-fill $wallpaper || xsetroot -solid '#111111'
-		wal --theme .config/wal/colorschemes/dark/batpuccin16.json &
-	;;
+	if-battery)
+		if [ -e /sys/class/power_supply/BAT0 ]; then
+			batsignal &
+		fi
+	;;	
 
 	keyboard-layout)
 		xmodmap "~/.Xmodmap"
@@ -55,21 +50,26 @@ case "$1" in
 		screen-locker &
 	;;
 
+	theme)
+		wallpaper=~/.local/share/wallpapers/moon-3440x1440.jpg 
+		feh --bg-fill $wallpaper || xsetroot -solid '#111111'
+		wal --theme .config/wal/colorschemes/dark/batpuccin16.json &
+	;;
+
     test)
         echo Test complete.
     ;;
 
-    --help|*)
-        cat <<- EOF
-		Usage: startup --option
+    help|*) 
+		cat <<- EOF
+		Usage: startup <option>
 		  on-boot       	for startup programs on boot
 		  on-restart 	   	for programs that need refresh on WM restart
-		  compositor		picom
 		  bar				polybar
-		  theme				colors & theming
+		  compositor		picom
+		  if-battery		for battery based devices
 		  keyboard-layout	xmodmap
 		  lock				screensaver lock
-		  if-battery		for laptops and battery based devices
-		  test				test
+		  theme				colors & theming
 		EOF
 esac
