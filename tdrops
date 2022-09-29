@@ -8,7 +8,7 @@ function get_screen_width {
 function set_style_quake {
 		if [[ $(get_screen_width) > 2000 ]]; then
 			w="70%"
-			h="80%"
+			h="96%"
 			x="15%"
 			y=0
 		else
