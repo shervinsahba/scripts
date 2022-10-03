@@ -9,7 +9,6 @@ case "$1" in
 		date > $logfile
         #redshift -l $(latlong) &
         #redshift -l 47:-122 &
-		autorandr --change
 		autotiling &
 		startup if-battery
 		startup lock
@@ -25,6 +24,7 @@ case "$1" in
         startup bar
 		startup theme
 		startup compositor
+		autorandr --change
     ;;
 
 	bar|polybar)
