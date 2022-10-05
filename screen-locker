@@ -2,10 +2,10 @@
 
 if [ -e /sys/class/power_supply/BAT0 ]; then
 	seconds_dim=300
-	seconds_lock=330
+	seconds_lock=30
 else
 	seconds_dim=900
-	seconds_lock=1000
+	seconds_lock=900
 fi
-xset s $seconds_lock $seconds_dim
+xset s $seconds_dim $seconds_lock
 xss-lock -n dim-screen -- xsecurelock
