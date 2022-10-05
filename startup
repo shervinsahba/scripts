@@ -5,27 +5,27 @@ logfile=~/.startup-log
 exec 2>> $logfile
 
 case "$1" in
-    on-boot)
+	on-boot)
 		date > $logfile
-        #redshift -l $(latlong) &
-        #redshift -l 47:-122 &
+		#redshift -l $(latlong) &
+		#redshift -l 47:-122 &
 		autotiling &
 		startup if-battery
 		startup lock
 		# commands below this line utilize the system tray
-        udiskie --no-automount --notify --smart-tray &
-        indicator-sound-switcher &
+		udiskie --no-automount --notify --smart-tray &
+		indicator-sound-switcher &
 		syncthingtray --wait &
-        nm-applet &
-        pcloud &
-    ;;
+		nm-applet &
+		pcloud &
+	;;
 
-    on-restart)
-        startup bar
+	on-restart)
+		startup bar
 		startup theme
 		startup compositor
 		autorandr --change
-    ;;
+	;;
 
 	bar|polybar)
 		~/.config/polybar/polybar-launch mine
@@ -56,11 +56,11 @@ case "$1" in
 		wal --theme .config/wal/colorschemes/dark/batpuccin16.json &
 	;;
 
-    test)
-        echo Test complete.
-    ;;
+	test)
+		echo Test complete.
+	;;
 
-    help|*) 
+	help|*) 
 		cat <<- EOF
 		Usage: startup <option>
 		  on-boot       	for startup programs on boot
