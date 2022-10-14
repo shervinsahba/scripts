@@ -1,4 +1,6 @@
 #!/bin/bash
+# a pacman fuzzy finder and installer
+# inspired by Daniel Grey's scripts (https://github.com/DanielFGray/fzf-scripts)
 
 declare -r esc=$'\033'
 declare -r c_reset="${esc}[0m"
