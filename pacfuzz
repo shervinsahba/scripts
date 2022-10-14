@@ -33,11 +33,11 @@ main() {
 
 	packages=$(fzf --preview="$search -Si {2}" < <( $search -Ss "$1" | \
 		gawk '{
-			getline description; sub(/ */,"", description);	 # pkg description
-			repo = gensub(/\/.*/, "", 1, $1);				 # repo name
-	        name = green gensub(/.*\//, "", 1, $1) reset;	 # pkg name
-			vers = yellow $2 reset;							 # pkg version
-			meta = blue gensub(/\[.*\]/, "", 1, $3) reset;	 # metapackage
+			getline description; sub(/ */,"", description);  # pkg description
+			repo = gensub(/\/.*/, "", 1, $1);                # repo name
+			name = green gensub(/.*\//, "", 1, $1) reset;    # pkg name
+			vers = yellow $2 reset;                          # pkg version
+			meta = blue gensub(/\[.*\]/, "", 1, $3) reset;   # metapackage
 
 			# mark installed pkgs
 			inst = sub(/\[.*\]/, $3 $4);
