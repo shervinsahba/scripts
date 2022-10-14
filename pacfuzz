@@ -8,6 +8,7 @@ declare -r c_red="${esc}[31m"
 declare -r c_green="${esc}[32m"
 declare -r c_yellow="${esc}[33m"
 declare -r c_blue="${esc}[34m"
+declare -r c_black="${esc}[30m"
 
 fzf() {
 	command fzf --exact --no-sort --multi --cycle --ansi \
@@ -27,9 +28,10 @@ install() {
 }
 
 main() {
-	local search packages
+	local search installed_mark packages
 	search="pacman"
 	installed_mark="*"
+	uninstalled_mark="-"
 
 	packages=$(fzf --preview="$search -Si {2}" < <( $search -Ss "$1" | \
 		gawk '{
@@ -41,12 +43,12 @@ main() {
 
 			# mark installed pkgs
 			inst = sub(/\[.*\]/, $3 $4);
-			if (inst == 1) {inst=installed_mark};
-			if (inst == 0) {inst=" "};
-			inst = red inst reset;
+			if (inst == 1) {inst=red installed_mark reset};
+			if (inst == 0) {inst=black uninstalled_mark reset};
 
 			print inst, name, vers, meta, description;
-		}' blue="$c_blue" yellow="$c_yellow" green="$c_green" red="$c_red" reset="$c_reset" installed_mark="$installed_mark"
+		}' black="$c_black" blue="$c_blue" yellow="$c_yellow" green="$c_green" red="$c_red" \
+		reset="$c_reset" installed_mark="$installed_mark" uninstalled_mark="$uninstalled_mark"
 		) | sed 's/^\** *//' | cut -d' ' -f1)
 	[[ "$search" = "pacman" ]] && search="sudo pacman"
 	install "$search -S" <<< "$packages"
