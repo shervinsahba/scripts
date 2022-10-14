@@ -45,7 +45,7 @@ main() {
 			if (inst == 0) {inst=" "};
 			inst = red inst reset;
 
-	        print inst, name, vers, meta, description;
+			print inst, name, vers, meta, description;
 		}' blue="$c_blue" yellow="$c_yellow" green="$c_green" red="$c_red" reset="$c_reset" installed_mark="$installed_mark"
 		) | sed 's/^\** *//' | cut -d' ' -f1)
 	[[ "$search" = "pacman" ]] && search="sudo pacman"
