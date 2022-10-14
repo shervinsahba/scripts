@@ -1,0 +1,46 @@
+#!/bin/bash
+
+declare -r esc=$'\033'
+declare -r c_reset="${esc}[0m"
+declare -r c_red="${esc}[31m"
+declare -r c_green="${esc}[32m"
+declare -r c_blue="${esc}[34m"
+
+fzf() {
+  command fzf --exact --no-sort --multi --cycle --ansi \
+    --bind='?:toggle-preview' \
+    --no-hscroll --inline-info \
+    --header='tab:selects multiple pkgs, ?:toggle info' "$@"
+}
+
+install() {
+  local pkgs count
+  mapfile -t pkgs
+  (( ${#pkgs} > 0 )) || exit
+  count="${#pkgs[@]} package"
+  (( ${#pkgs[@]} > 1 )) && count+='s'
+  printf "installing %s: %s\n" "$count" "${pkgs[*]}"
+  $1 "${pkgs[@]}" < /dev/tty
+}
+
+main() {
+  local search packages
+  search='pacman'
+
+  packages=$(fzf --preview="$search -Si {2}" < <( $search -Ss "$1" | \
+	gawk '{
+        getline description; sub(/ */,"", description);	 # pkg description
+        repo = gensub(/\/.*/, "", 1, $1);				 # repo name
+        name = green gensub(/.*\//, "", 1, $1) reset;	 # pkg name
+		vers = blue $2 reset;							 # pkg version
+		meta = gensub(/\[.*\]/, "", 1, $3);				 # metapackage
+        inst = red gensub(/\(.*\)/, "", 1, gensub(/\[.*\]/, "*", 1, $3 $4)) reset;	 # mark installed pkgs with *
+        print inst, name, vers, meta, description;
+     }' blue="$c_blue" green="$c_green" red="$c_red" reset="$c_reset"
+    ) | cut -d' ' -f2)
+
+[[ "$search" = "pacman" ]] && search="sudo pacman"
+install "$search -S" <<< "$packages"
+}
+
+main
