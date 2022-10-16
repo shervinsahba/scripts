@@ -5,11 +5,14 @@
 case "$1" in
   -u) shift
   	for file in "$@"; do
-  		mv "$file" $(basename "$file" .bak)
+		if [[ "${file##*.}" == "bak" ]]; then
+			mv "$file" "${file%.*}"
+		fi
   	done 
   	;;
 
-  * ) for file in "$@"; do
+  *)
+	for file in "$@"; do
   		mv "$file" "$file".bak
   	done
   	;;
