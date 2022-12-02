@@ -1,0 +1,5 @@
+#!/bin/bash
+# adds OCR to every pdf in the present directory
+# see https://programminghistorian.org/en/lessons/working-with-batches-of-pdf-files#text-recognition-in-pdf-files
+
+fd . -e pdf -d 1 --exec ocrmypdf --language eng --deskew --clean '{}' '{}'
