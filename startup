@@ -33,7 +33,7 @@ case "$1" in
 
 	compositor|picom)
 		pkill picom && sleep 2
-		picom --experimental-backends --config ~/.config/picom/picom.conf &
+		picom --config ~/.config/picom/picom.conf &
 	;;
 
 	if-battery)
