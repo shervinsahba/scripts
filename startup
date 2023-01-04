@@ -17,6 +17,7 @@ case "$1" in
 		indicator-sound-switcher &
 		syncthingtray --wait &
 		nm-applet &
+		blueman-applet &
 		pcloud &
 	;;
 
