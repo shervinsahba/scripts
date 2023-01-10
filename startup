@@ -19,6 +19,7 @@ case "$1" in
 		nm-applet &
 		blueman-applet &
 		pcloud &
+		yadm pull &
 	;;
 
 	on-restart)
