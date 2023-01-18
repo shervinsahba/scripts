@@ -8,7 +8,7 @@ case "$1" in
 	on-boot)
 		date > $logfile
 		#redshift -l $(latlong) &
-		#redshift -l 47:-122 &
+		redshift -l 47:-122 &
 		autotiling &
 		startup if-battery
 		startup lock

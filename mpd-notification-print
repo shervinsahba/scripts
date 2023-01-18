@@ -1,0 +1,10 @@
+#!/bin/bash
+## send a signal to mpd-notification. should display current song info.
+
+killall -HUP mpd-notification#!/bin/bash
+## send a signal to mpd-notification. should display current song info.
+
+killall -HUP mpd-notification#!/bin/bash
+## send a signal to mpd-notification. should display current song info.
+
+killall -HUP mpd-notification
