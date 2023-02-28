@@ -12,13 +12,14 @@ case "$1" in
 		autotiling &
 		startup if-battery
 		startup lock
+		easyeffects -l NoiseFilterVoice --gapplication-service
 		# commands below this line utilize the system tray
 		udiskie --no-automount --notify --smart-tray &
 		indicator-sound-switcher &
 		syncthingtray --wait &
 		nm-applet &
 		blueman-applet &
-		pcloud &
+		#pcloud &
 		yadm pull &
 	;;
 
