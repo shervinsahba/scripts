@@ -7,19 +7,12 @@ exec 2>> $logfile
 case "$1" in
 	on-boot)
 		date > $logfile
-		#redshift -l $(latlong) &
 		redshift -l 47:-122 &
 		autotiling &
 		startup if-battery
 		startup lock
-		easyeffects -l NoiseFilterVoice --gapplication-service
-		# commands below this line utilize the system tray
-		udiskie --no-automount --notify --smart-tray &
-		indicator-sound-switcher &
-		syncthingtray --wait &
-		nm-applet &
-		blueman-applet &
-		#pcloud &
+		startup noisefilter
+		startup taskbar-utilities
 		yadm pull &
 	;;
 
@@ -35,7 +28,7 @@ case "$1" in
 	;;
 
 	compositor|picom)
-		pkill picom && sleep 2
+		pkill picom && sleep 1
 		picom --config ~/.config/picom/picom.conf &
 	;;
 
@@ -51,6 +44,18 @@ case "$1" in
 
 	lock)
 		screen-locker &
+	;;
+
+	noisefilter)
+		easyeffects -l NoiseFilterVoice --gapplication-service &
+	;;
+
+	taskbar-utilities)
+		udiskie --no-automount --notify --smart-tray &
+		indicator-sound-switcher &
+		syncthingtray --wait &
+		nm-applet &
+		blueman-applet &
 	;;
 
 	theme)
@@ -73,6 +78,8 @@ case "$1" in
 		  if-battery		for battery based devices
 		  keyboard-layout	xmodmap
 		  lock				screensaver lock
+		  noisefilter		noisefiltering for microphone
+		  taskbar-utilities various programs that use the taskbar
 		  theme				colors & theming
 		EOF
 esac
