@@ -1,4 +1,6 @@
 # See README.md for usage instructions
+# https://gitlab.com/Nmoleo/i3-volume-brightness-indicator/-/tree/main
+
 bar_color="#b3cfa7"
 volume_step=1
 brightness_step=2.5
