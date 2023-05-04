@@ -4,4 +4,15 @@ input_file="$1"      # e.g. linux_distro.iso
 output_file="$2"    # e.g. a partition like /dev/sdc
 
 
-dd bs=4M if="$input_file" of="$output_file" status=progress oflag=sync
+function yes_or_no {
+    while true; do
+        read -p "$* [y/n]: " yn
+        case $yn in
+            [Yy]*) return 0  ;;  
+            [Nn]*) echo "Aborted" ; return  1 ;;
+        esac
+    done
+}
+
+echo This will write "$input_file" into "$output_file". If you are etching an image onto a USB, please be certain the output file is the correct device, else MASSIVE DAMAGE may occur. Proceed?
+yes_or_no && dd bs=4M if="$input_file" of="$output_file" status=progress oflag=sync
