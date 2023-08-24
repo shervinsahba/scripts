@@ -14,6 +14,7 @@ case "$1" in
 		startup noisefilter
 		startup taskbar-utilities
 		yadm pull &
+		git -C ~/src/scripts/ pull &
 	;;
 
 	on-restart)
