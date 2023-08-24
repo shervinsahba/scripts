@@ -1,0 +1,8 @@
+#!/bin/bash
+
+infile="$1"
+outfile="$2"
+
+gs -sOutputFile="$outfile" -sDEVICE=pdfwrite \
+  -sColorConversionStrategy=Gray -dProcessColorModel=/DeviceGray \
+  -dCompatibilityLevel=1.4 "$infile" < /dev/null
