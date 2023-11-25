@@ -26,7 +26,7 @@ case "$1" in
 	;;
 
 	bar|polybar)
-		~/.config/polybar/polybar-launch mine
+		waybar || ~/.config/polybar/polybar-launch mine
 	;;
 
 	compositor|picom)
@@ -36,6 +36,8 @@ case "$1" in
 
 	if-battery)
 		if [ -e /sys/class/power_supply/BAT0 ]; then
+			batsignal &
+		elif [ -e /sys/class/power_supply/BAT1 ]; then
 			batsignal &
 		fi
 	;;	
