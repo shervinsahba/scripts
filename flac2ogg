@@ -1,0 +1,8 @@
+#!/bin/bash
+
+EXT=flac
+for file in *.${EXT}; do
+   if [ ! -e "${file%.flac}".ogg ]; then          
+        ffmpeg -i "${file}" -qscale:a 6 "${file%.flac}".ogg
+   fi
+done
