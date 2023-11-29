@@ -20,6 +20,7 @@ case "$1" in
 
 	on-restart)
 		startup bar
+		startup keyboard-layout
 		startup theme
 		startup compositor
 		autorandr --change
@@ -43,7 +44,7 @@ case "$1" in
 	;;	
 
 	keyboard-layout)
-		xmodmap "~/.Xmodmap"
+		xmodmap ~/.Xmodmap
 	;;
 
 	lock)
@@ -75,15 +76,15 @@ case "$1" in
 	help|*) 
 		cat <<- EOF
 		Usage: startup <option>
-		  on-boot       	for startup programs on boot
-		  on-restart 	   	for programs that need refresh on WM restart
-		  bar				polybar
-		  compositor		picom
-		  if-battery		for battery based devices
-		  keyboard-layout	xmodmap
-		  lock				screensaver lock
-		  noisefilter		noisefiltering for microphone
+		  on-boot           for startup programs on boot
+		  on-restart        for programs that need refresh on WM restart
+		  bar               polybar
+		  compositor        picom
+		  if-battery        for battery based devices
+		  keyboard-layout   xmodmap
+		  lock              screensaver lock
+		  noisefilter       noisefiltering for microphone
 		  taskbar-utilities various programs that use the taskbar
-		  theme				colors & theming
+		  theme             colors & theming
 		EOF
 esac
