@@ -3,6 +3,9 @@
 if [ -e /sys/class/power_supply/BAT0 ]; then
 	seconds_dim=300
 	seconds_lock=30
+elif [ -e /sys/class/power_supply/BAT1 ]; then
+    seconds_dim=300
+    seconds_lock=30
 else
 	seconds_dim=900
 	seconds_lock=900
