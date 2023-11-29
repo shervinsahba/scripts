@@ -3,6 +3,7 @@
 
 logfile=~/.startup-log
 exec 2>> $logfile
+
 redshift_location="47:-122"
 
 case "$1" in
