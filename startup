@@ -59,7 +59,7 @@ case "$1" in
 	taskbar-utilities)
 		udiskie --no-automount --notify --smart-tray &
 		indicator-sound-switcher &
-		syncthingtray --wait &
+		#syncthingtray --wait &
 		nm-applet &
 		blueman-applet &
 		syncthingtray &
