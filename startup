@@ -67,8 +67,8 @@ case "$1" in
 
 	theme)
 		wallpaper=~/.local/share/wallpapers/wood-background-1.jpg 
-		feh --bg-fill $wallpaper || xsetroot -solid '#111111'
-		wal --theme .config/wal/colorschemes/dark/batpuccin16.json &
+		feh --bg-fill $wallpaper $wallpaper $wallpaper || xsetroot -solid '#111111'
+		wal --theme ~/.config/wal/colorschemes/dark/batpuccin16.json &
 	;;
 
 	test)
