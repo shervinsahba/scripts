@@ -1,0 +1,4 @@
+#!/bin/bash
+# launch your webcam in mpv and press s to take a snapshot
+
+mpv av://v4l2:/dev/video0 --profile=low-latency --untimed
