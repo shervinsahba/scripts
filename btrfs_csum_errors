@@ -1,0 +1,5 @@
+#!/bin/bash
+# find btrfs errors found during btrfs scrub
+# see https://superuser.com/questions/858237/finding-files-with-btrfs-uncorrectable-errors
+
+dmesg | grep -e "BTRFS warning.*path:" | sed -e 's/^.*path\: //' | sort -u
