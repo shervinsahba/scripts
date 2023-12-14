@@ -4,8 +4,7 @@
 dirname="$1"
 
 if [ -n "$dirname" ]; then
-    encfs $(pwd)/."$dirname" $(pwd)/"$dirname"
-    touch "$dirname"/.borgmatic_ignore
+    encfs $(pwd)/."$dirname" $(pwd)/"$dirname" &&  touch "$dirname"/.borgmatic_ignore
 else
     echo "Usage: $(basename $0) <dirname>"
     echo "Mounts an encfs directory '.<dirname>' to '<dirname>' in present working directory."
