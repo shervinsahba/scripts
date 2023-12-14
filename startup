@@ -2,10 +2,22 @@
 # a script to manage startup programs
 
 logfile=~/.startup-log
-exec 2>> $logfile
 
-redshift_location="47:-122"
+# get window manager
+function get_wm() {
+    array=("i3" "sway")
+    for item in "${array[@]}"; do
+        if pgrep -x "$item" > /dev/null; then
+            echo $item
+            break
+        fi
+    done
+}
 
+wm=$(get_wm)
+
+
+# startup options
 case "$1" in
 	on-boot)
 		date > $logfile
@@ -27,13 +39,20 @@ case "$1" in
 		autorandr --change
 	;;
 
-	bar|polybar)
-		waybar || ~/.config/polybar/polybar-launch mine
+	bar)
+		if [[ $wm == i3 ]]; then
+			~/.config/polybar/polybar-launch mine
+		elif [[ $wm == sway ]]; then
+			pkill waybar
+			waybar
+		fi
 	;;
 
 	compositor|picom)
-		pkill picom && sleep 1
-		picom --config ~/.config/picom/picom.conf &
+		if [[ $wm = i3 ]]; then
+			pkill picom && sleep 1
+			picom --config ~/.config/picom/picom.conf &
+		fi
 	;;
 
 	if-battery)
