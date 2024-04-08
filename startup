@@ -27,6 +27,7 @@ case "$1" in
 		startup lock
 		startup noisefilter
 		startup taskbar-utilities
+		thunar --daemon &
 		yadm pull &
 		git -C ~/src/scripts/ pull &
 	;;
