@@ -1,0 +1,6 @@
+SET="gsettings set"
+
+for i in {1..9}; do
+  ${SET} org.gnome.desktop.wm.keybindings switch-to-workspace-${i} "['<Super>${i}']"
+  ${SET} org.gnome.desktop.wm.keybindings move-to-workspace-${i} "['<Super><Shift>${i}']"
+done
