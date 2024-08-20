@@ -1,0 +1,20 @@
+#!/bin/bash
+
+case "$1" in
+  on|mullvad)
+    suggestion=$(tailscale exit-node suggest | grep -o "..-...-wg-.*\.mullvad\.ts\.net" | head -n1) 
+  ;;
+  
+  off|blank)
+    suggestion=
+  ;;
+  *)
+    echo "Need to re-run script with on/off."
+    exit
+  ;;
+esac
+	
+echo "Running: tailscale set --exit-node=${suggestion}"
+
+tailscale set --exit-node=${suggestion}
+
