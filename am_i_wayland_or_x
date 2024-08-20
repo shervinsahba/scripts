@@ -1,0 +1,7 @@
+#!/bin/bash
+# prints the session type as wayland or X
+
+session_id=$(awk '/tty/ {print $1}' <(loginctl))
+
+loginctl show-session ${session_id} -p Type | awk -F= '{print $2}'
+
