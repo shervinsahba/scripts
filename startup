@@ -35,7 +35,7 @@ case "$1" in
 
 	on-restart)
 		startup bar
-		startup keyboard-layout
+		#startup keyboard-layout
 		startup theme
 		startup compositor
 		autorandr --change
