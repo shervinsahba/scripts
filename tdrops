@@ -23,7 +23,7 @@ function set_style_quake {
 case "$1" in
     kitty)
 		set_style_quake
-		tdrop -ma -w $w -h $h -x $x -y $y kitty --name kittydrop 
+		tdrop -ma -w $w -h $h -x $x -y $y kitty --name kittydrop || kitty
     ;;
 
     pavucontrol)
@@ -36,7 +36,7 @@ case "$1" in
 
     zotero)
 		set_style_quake
-        tdrop -ma -w $w  -h $h -x $x -y $y zotero
+        tdrop -ma -w $w  -h $h -x $x -y $y zotero || zotero
     ;;
     
     *)
