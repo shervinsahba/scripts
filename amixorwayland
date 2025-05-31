@@ -1,0 +1,4 @@
+!/bin/bash
+# returns whether you are using X11 or Wayland. May only return tty if not using a display manager
+
+loginctl show-session $(loginctl show-user $(whoami) -p Display --value) -p Type --value
