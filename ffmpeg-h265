@@ -1,0 +1,8 @@
+#!/bin/bash
+# takes a video file and returns a version of it encoded it with H.265
+
+input="$1"
+output=${1##*/}
+output=${output%.*}
+
+ffmpeg -i "$input" -vcodec libx265 -crf 28 "${output}_H.264.mp4"
