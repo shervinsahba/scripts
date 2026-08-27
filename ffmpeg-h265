@@ -1,8 +1,23 @@
 #!/bin/bash
 # takes a video file and returns a version of it encoded it with H.265
 
+sametime=false
+while getopts ":t" opt; do
+case ${opt} in
+  t) # changes the new file to have the same modification time as the previous
+     # this is for record keeping consistency
+     sametime=true
+    ;;
+esac
+shift
+done
+
 input="$1"
 output=${1##*/}
-output=${output%.*}
+output=${output%.*}_H265.mp4
 
-ffmpeg -i "$input" -vcodec libx265 -crf 28 "${output}_H.264.mp4"
+ffmpeg -i "$input" -vcodec libx265 -crf 28 "${output}"
+
+if [ "$sametime" = true ]; then
+  touch -t $(date -r "${input}" +'%Y%m%d%H%M.%S') "${output}"
+fi
